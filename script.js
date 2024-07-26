@@ -2,82 +2,67 @@ document.addEventListener("DOMContentLoaded", () => {
   let gameBoard = document.querySelector(".GameBoard");
   let clearbtn = document.querySelector("#clearbtn");
   let currentTurn = "X";
-  let isWinner = false;
-  let tictactoe = [
-    ["_", "_", "_"],
-    ["_", "_", "_"],
-    ["_", "_", "_"],
-  ];
+  let tictactoe = [" ", " ", " ", " ", " ", " ", " ", " ", " "];
 
-  while (isWinner === false) {
-    function UpdateBoard() {
-      gameBoard.innerHTML = '';
-      tictactoe.forEach((tilerow, tileindex) => {
-        tilerow.forEach(tile => {
-          tile = document.createElement("button");
-          tile.classList.add("gametile");
-          tile.type = "button";
-          gameBoard.appendChild(tile);
-        });
-      });
-      let gametiles = document.querySelector(".gametile");
-      gametiles.forEach((tile) => {
-        tile.addEventListener("click", (e) => {
-          tile.textContent = currentTurn;
-          currentTurn = currentTurn == "X" ? "O" : "X";
+  function UpdateBoard() {
+    gameBoard.innerHTML = "";
+    tictactoe.forEach((value, index) => {
+      let btn = document.createElement("button");
+      btn.classList.add("gametile");
+      btn.type = "button";
+      btn.dataset.index = index; 
+      btn.textContent = value;
+      gameBoard.appendChild(btn);
+    });
+    let gametiles = document.querySelectorAll(".gametile");
+    gametiles.forEach((tile) => {
+      tile.addEventListener("click", (e) => {
+        e.preventDefault();
+        let index = e.target.dataset.index;
+        if (tictactoe[index] === "X" || tictactoe[index] === "O") {
+          alert("The tile is already chosen");
+        } else {
+          tictactoe[index] = currentTurn;
+          e.target.textContent = currentTurn;
+          currentTurn = currentTurn === "X" ? "O" : "X";
           checkWinner();
-        });
+        }
       });
-    }
+    });
+  }
 
-    
   function checkWinner() {
-    for (let i = 0; i < 3; i++) {
-      if (
-        tictactoe[i][0] === "X" &&
-        tictactoe[i][1] === "X" &&
-        tictactoe[i][2] === "X"
-      ) {
-        alert("player X won!");
-        isWinner = true;
-        return;
-      } else if (
-        tictactoe[0][i] === "X" &&
-        tictactoe[1][i] === "X" &&
-        tictactoe[2][i] === "X"
-      ) {
-        alert("player X won!");
-        isWinner = true;
-        return;
-      } else if (
-        tictactoe[i][0] === "Y" &&
-        tictactoe[i][1] === "Y" &&
-        tictactoe[i][2] === "Y"
-      ) {
-        alert("player Y won!");
-        isWinner = true;
-        return;
-      } else if (
-        tictactoe[0][i] === "O" &&
-        tictactoe[1][i] === "O" &&
-        tictactoe[2][2] === "O"
-      ) {
-        alert("player O won!");
-        isWinner = true;
+  
+    const winningCombos = [
+      [0, 1, 2], 
+      [3, 4, 5], 
+      [6, 7, 8], 
+      [0, 3, 6], 
+      [1, 4, 7], 
+      [2, 5, 8], 
+      [0, 4, 8], 
+      [2, 4, 6]  
+    ];
+
+    for (const combo of winningCombos) {
+      const [a, b, c] = combo;
+      if (tictactoe[a] !== " " && tictactoe[a] === tictactoe[b] && tictactoe[a] === tictactoe[c]) {
+        alert(`Player ${tictactoe[a]} won!`);
         return;
       }
     }
-  }   
-  UpdateBoard(); 
+
+
+    if (tictactoe.every(cell => cell === "X" || cell === "O")) {
+      alert("It's a draw!");
+    }
   }
-  
-  clearbtn.addEventListener("click", ()=>{
-    let gametiles = document.querySelectorAll(".gametile");    
-    gametiles.forEach((tile) => {
-        tile.addEventListener("click", (e) => {
-          tile.textContent = '';
-        });
-      });
+
+  clearbtn.addEventListener("click", () => {
+    currentTurn = "X";
+    tictactoe = [" ", " ", " ", " ", " ", " ", " ", " ", " "];
+    UpdateBoard(); 
   });
 
+  UpdateBoard(); 
 });
