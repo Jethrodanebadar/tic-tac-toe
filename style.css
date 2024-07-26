@@ -1,7 +1,6 @@
 html, body{
   padding: 0;
   margin: 0;
-  height: 100vh;
 }
 
 .game-container{
@@ -28,5 +27,5 @@ html, body{
 }
 
 .gametile:hover{
-  background-color:blue;
+  background-color:rgb(51, 240, 199);
 }

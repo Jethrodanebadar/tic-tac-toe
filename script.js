@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
           gameBoard.appendChild(tile);
         });
       });
-      let gametiles = document.querySelectorAll(".gametile");
+      let gametiles = document.querySelector(".gametile");
       gametiles.forEach((tile) => {
         tile.addEventListener("click", (e) => {
           tile.textContent = currentTurn;
@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
       } else if (
         tictactoe[0][i] === "O" &&
         tictactoe[1][i] === "O" &&
-        tictactoe[2][i] === "O"
+        tictactoe[2][2] === "O"
       ) {
         alert("player O won!");
         isWinner = true;
